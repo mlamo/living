@@ -1,0 +1,26 @@
+#, Byte-compiled, /, optimized, /, DLL, files
+__pycache__/
+*.py[cod]
+*.pyxbldc
+
+#, Distribution, /, packaging
+.Python
+venv/
+build/
+develop-eggs/
+dist/
+eggs/
+sdist/
+*.egg-info/
+*.egg
+.venv/
+
+#, Unit, test, /, coverage, reports
+.coverage
+.cache
+reports
+profile_output*
+slurm*
+
+#, jupyter, files
+.ipynb_checkpoints/

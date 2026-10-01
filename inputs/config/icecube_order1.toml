@@ -1,0 +1,31 @@
+[model]
+survival_probability_method = "integral"  # "integral" or "instantaneous" (approximation with step function)
+
+[generation]
+liv_order = 1  # order of the LIV correction
+components = "default"  # options: default (equally split between sub and superluminal for odd n, all subluminal for even n), superluminal, subluminal
+include_decay = true  # enable/disable superluminal neutrino decay
+include_neutrino_efficiency = true
+
+[evaluation]
+liv_order = 1  # order of the LIV correction
+components = "default"  # options: default (equally split between sub and superluminal for odd n, all subluminal for even n), superluminal, subluminal
+include_decay = true  # enable/disable superluminal neutrino decay
+include_energy_term = true
+include_neutrino_efficiency = true
+approximate_time_pdf = false  # toggle on to neglect intrinsic time delays in time pdf computation
+range_fit_log10eta = [-4.0, 4.0]  # range of log10(eta) values to scan for the fit
+range_fit_fsig = [0.0, 1.0]  # range of fsig values to scan for the fit
+
+[grbs]
+catalog = "inputs/grbs/grb_catalog_grbweb.csv"
+intrinsic_time_delay = [-350, 150]  # in seconds
+
+[neutrinos]
+dataset_class = "ICHESEDataset"
+dataset_args = {}
+
+[output]
+folder_pes = "outputs/pes/icecube_order1"
+folder_fig = "outputs/fig/icecube_order1"
+folder_pdfs = "outputs/fig/icecube_order1/pdfs"

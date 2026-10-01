@@ -1,0 +1,45 @@
+[project]
+name = "LIViNG"
+authors = [{name = "Mathieu Lamoureux", email = "lamoureux@apc.in2p3.fr"}, {name = "Maykoll A. Reyes", email = "mkreyes@unizar.es"}]
+description = "Lorentz Invariance Violation with Neutrinos and Gamma-ray bursts"
+dynamic = ["version"]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "astropy",
+    "fb8",
+    "histlite",
+    "line_profiler",
+    "matplotlib",
+    "numpy",
+    "pandas",
+    "scipy",
+    "tables",
+    "tomli",
+    "tqdm"
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "pytest",
+    "pytest-cov",
+    "pytest-flake8",
+    "pytest-pylint",
+    "pytest-watch"
+]
+
+[project.scripts]
+liv-run-ts = "living.run:run_ts"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools-git-versioning]
+enabled = true
+
+[build-system]
+requires = ["setuptools>=61", "wheel", "setuptools_scm[toml]>=8.0"]
+
+[tool.black]
+line-length = 150
