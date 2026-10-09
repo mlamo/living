@@ -25,11 +25,7 @@ def plot_time_pdf(configfile: str, eta: float, erecos: list):
         d.compute_all_distances(grbc)
 
     y = defaultdict(dict)
-    dt_max = am.time_delay_liv(eta, grb.Dn(config["evaluation"]["liv_order"]), 2*max(erecos), config["evaluation"]["liv_order"]) + (1+grb.redshift) * 400 / 86400
-    if config["evaluation"]["liv_order"] == 1:
-        x = np.linspace(grb.time - 0.02, grb.time + dt_max, 10001)
-    else:
-        x = np.linspace(grb.time - 0.01, grb.time + dt_max, 10001)
+    x = np.linspace(grb.time - 1/24, grb.time + 1, 100001)
     lsts = np.zeros_like(x)
     for samplename in ("track", "shower"):
         for ereco in erecos:
@@ -43,30 +39,34 @@ def plot_time_pdf(configfile: str, eta: float, erecos: list):
     fig, ax = plt.subplots()
     handles = []
     for samplename, color in zip(["track", "shower"], ["#F7A278", "#6DD3CE"]):
-        for ereco, ls in zip(erecos, ["solid", "dashed"]):
-            ax.plot(x-grb.time, y[samplename][ereco], color=color, ls=ls)
-    for samplename, color in zip(["Track sample", "Cascade sample"], ["#F7A278", "#6DD3CE"]):
+        for ereco, ls in zip(erecos, ["solid", "dashed", "dashdot"]):
+            ax.plot(x-grb.time, y[samplename][ereco] / y[samplename][ereco].max(), color=color, ls=ls)
+    for samplename, color in zip(["Tracks", "Cascades"], ["#F7A278", "#6DD3CE"]):
         handles.append(matplotlib.patches.Patch(facecolor=color, label=samplename))
-    for ereco, ls in zip(erecos, ["solid", "dashed"]):
+    for ereco, ls in zip(erecos, ["solid", "dashed", "dashdot"]):
         handles.append(matplotlib.lines.Line2D([], [], color="black", ls=ls, label=rf"$E_{{\text{{reco}}}} = {ereco/1e3:g}$ TeV"))
     label = [
+        rf"$n = {config['evaluation']['liv_order']}$",
         rf"z={grb.redshift:.1f}",
         rf"$\eta={eta:.0f}$",
-        rf"$n_{{\text{{LIV}}}} = {config['evaluation']['liv_order']}$"
     ]
-    ax.annotate("\n".join(label), xy=(0.95, 0.65), xycoords="axes fraction", fontsize=13, va="top", ha="right")
+    handles.append(matplotlib.patches.Patch(color='none', label=", ".join(label)))
     ax.set_xlabel(r"MJD - MJD$_{\text{GRB}}$", fontsize=15)
-    ax.set_ylabel(r"PDF [day$^{-1}$]", fontsize=13)
+    ax.set_ylabel(r"PDF (a.u.)", fontsize=13)
+    ax.set_xscale("symlog", linthresh=10/(24*60))
+    ax.set_xticks([-1/24, -10/(24*60), -1/(24*60), 1/(24*60), 10/(24*60), 1/24, 1], ["-1h", "-10'", "-1'", "1'", "10'", "1h", "1d"], minor=False)
+    ax.set_xticks(np.append(np.append(1/24 * np.arange(1, 25), 1/(24*60) * np.arange(-60, 61, 10)), 1/(24*60) * np.arange(-10, 11)), minor=True)
+    ax.set_xlim(-1/24, 1)
     ax.axvline((1+grb.redshift)*config["grbs"]["intrinsic_time_delay"][0] / 86400, color="k", ls="dotted")
     ax.axvline((1+grb.redshift)*config["grbs"]["intrinsic_time_delay"][1] / 86400, color="k", ls="dotted")
-    ax.legend(handles=handles, loc="upper right", fontsize=13)
+    ax.legend(handles=handles, loc="lower center", fontsize=11, ncol=3, bbox_to_anchor=(0.5, 1.01))
     plt.tight_layout()
     fig.savefig(outfig)
 
 
 if __name__ == "__main__":
 
-    for eta in (0.1,1,20):
-        plot_time_pdf("inputs/config/icecube_order1.toml", eta, [6e4, 2e5])
-    for eta in (1e6, 1e7):
-        plot_time_pdf("inputs/config/icecube_order2.toml", eta, [5e5, 1e6])
+    for eta in (10, 20, 100,):
+        plot_time_pdf("inputs/config/icecube_order1.toml", eta, [1e3, 2e4, 1e5])
+    for eta in (1e6,):
+        plot_time_pdf("inputs/config/icecube_order2.toml", eta, [1e6, 5e6])
