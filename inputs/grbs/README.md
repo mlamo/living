@@ -1,0 +1,2 @@
+- The GRBweb list is extracted directly from the GRBweb website (https://user-web.icecube.wisc.edu/~grbweb_public/).
+- The list labeled `AmelionoCamelia` is an extraction of the table in Appendix A of Amelino-Camelia et al, JCAP 02 (2026), 035.

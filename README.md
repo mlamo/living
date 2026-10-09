@@ -18,7 +18,7 @@ There are four main modules:
 
 A function to generate pseudo-experiments is ready to use, as defined in `run.py` and available directly as script after package installation:
 
-* `liv-run-ts [-h] [--config CONFIG] [--npes NPES] [--fsig FSIG] [--nsig NSIG] [--eta ETA]
+* `liv-run-ts [-h] [--config CONFIG] [--npes NPES] [--fsig FSIG] [--nsig NSIG] [--eta ETA]`
   Compute the TS for scrambled data or data with some signal injection.
 ```bash
 optional arguments:
@@ -67,3 +67,7 @@ print("TS: ", test_statistic(events, dataset, grbs_pe)[0])
 bf_fsig, bf_eta = bestfit(events, dataset, grbs_pe)
 print("Best-fit point:", bestfit(events, dataset, grbs_pe))
 ```
+
+##### Example scripts
+
+Scripts to analyse the results and produce some example plots are available in `scripts/`. Especially, they may be used to perform the analysis of IceCube-HESE 12yr dataset.
